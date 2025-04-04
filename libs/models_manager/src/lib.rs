@@ -13,7 +13,26 @@ impl ModelsManager {
 
         let containers: Vec<ContainerSummary> = connection.list_containers::<String>(None).await?;
 
-        println!("{:#?}", containers);
+        for container in containers {
+            match container.network_settings {
+                Some(settings) => match settings.networks {
+                    Some(networks) => {
+                        let mut ip_addrs: Vec<String> = Vec::new();
+
+                        for (_, parameters) in networks {
+                            match parameters.ip_address {
+                                Some(ip) => ip_addrs.push(ip),
+                                None => continue,
+                            }
+                        }
+
+                        println!("{:?} -> {:?}", container.names.unwrap(), ip_addrs)
+                    }
+                    None => continue,
+                },
+                None => continue,
+            }
+        }
 
         todo!()
     }
