@@ -9,14 +9,13 @@ pub async fn make_db() -> Result<DatabaseConnection, Box<dyn Error>> {
     let host: String = env::var("POSTGRES_HOST")?;
     let user: String = env::var("POSTGRES_USER")?;
     let password: String = env::var("POSTGRES_PASSWORD")?;
+    let db: String = env::var("POSTGRES_DB")?;
 
-    let url: String = format!("postgres://{}:{}@{}/", user, password, host);
+    let url: String = format!("postgres://{}:{}@{}/{}", user, password, host, db);
 
     let opt: ConnectOptions = ConnectOptions::new(url);
 
-    let db: DatabaseConnection = Database::connect(opt).await?;
-
-    Ok(db)
+    Ok(Database::connect(opt).await?)
 }
 
 pub fn make_bot() -> Result<Bot, VarError> {
