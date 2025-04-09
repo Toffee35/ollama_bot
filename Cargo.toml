@@ -11,7 +11,6 @@ unused_imports = "allow"
 [dependencies]
 sea-orm = { version = "1.1.8", default-features = false, features = [
   "sqlx-postgres",
-  "tokio",
 ] }
 teloxide = { version = "0.15.0", default-features = false, features = [
   "ctrlc_handler",
