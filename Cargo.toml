@@ -1,0 +1,19 @@
+[package]
+name = "ollama_bot"
+version = "0.1.0"
+edition = "2024"
+
+[lints.rust]
+dead_code = "allow"
+unused_variables = "allow"
+unused_imports = "allow"
+
+[dependencies]
+sea-orm = { version = "1.1.8", default-features = false, features = [] }
+teloxide = { version = "0.15.0", default-features = false, features = [
+  "ctrlc_handler",
+] }
+tokio = { version = "1.44.1", default-features = false, features = [
+  "macros",
+  "rt-multi-thread",
+] }
