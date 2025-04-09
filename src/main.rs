@@ -7,22 +7,14 @@ use teloxide::{
     prelude::{DependencyMap, Dispatcher},
 };
 
+mod make;
+use make::{make_bot, make_db};
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let host: String = env::var("POSTGRES_HOST")?;
-    let user: String = env::var("POSTGRES_USER")?;
-    let password: String = env::var("POSTGRES_PASSWORD")?;
+    let db: DatabaseConnection = make_db().await?;
 
-    let opt: String = format!(
-        "postgres://{}:{}@{}/database?currentSchema=my_schema",
-        user, password, host
-    );
-
-    let db: DatabaseConnection = Database::connect(opt).await?;
-
-    let token: String = env::var("BOT_TOKEN")?;
-
-    let bot: Bot = Bot::new(token);
+    let bot: Bot = make_bot()?;
 
     let handler: Handler<'static, DependencyMap, Result<(), ()>, DpHandlerDescription> =
         dptree::entry();
@@ -32,6 +24,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .build()
         .dispatch()
         .await;
+
+    db.close().await?;
 
     Ok(())
 }
