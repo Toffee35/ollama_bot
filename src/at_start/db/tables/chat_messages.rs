@@ -1,13 +1,13 @@
 use teloxide::types::ChatId;
 
-pub enum CreatorIs {
+pub enum Creator {
     User,
     Model,
 }
 
 pub struct ChatMessages {
-    chat_id: ChatId,
-    position: u64,
-    creator: CreatorIs,
+    chat_id: i64,
+    position: i64,
+    creator: String,
     text: String,
 }

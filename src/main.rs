@@ -6,12 +6,7 @@ use message::filter_message;
 
 use sea_orm::DatabaseConnection;
 use std::error::Error;
-use teloxide::{
-    Bot, RequestError,
-    dispatching::DpHandlerDescription,
-    dptree::{self, Handler},
-    prelude::{DependencyMap, Dispatcher},
-};
+use teloxide::{Bot, RequestError, dispatching::UpdateHandler, dptree, prelude::Dispatcher};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -19,8 +14,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let bot: Bot = make_bot()?;
 
-    let handler: Handler<'static, DependencyMap, Result<(), RequestError>, DpHandlerDescription> =
-        dptree::entry().branch(filter_message());
+    let handler: UpdateHandler<RequestError> = dptree::entry().branch(filter_message());
 
     Dispatcher::builder(bot, handler)
         .dependencies(dptree::deps![db.clone()])

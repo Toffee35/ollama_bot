@@ -5,6 +5,6 @@ pub enum State {
 }
 
 pub struct ChatsState {
-    id: ChatId,
-    state: State,
+    id: i64,
+    state: String,
 }

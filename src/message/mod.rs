@@ -1,12 +1,10 @@
 use teloxide::{
     RequestError,
-    dispatching::{DpHandlerDescription, UpdateFilterExt},
-    prelude::{DependencyMap, Handler},
+    dispatching::{UpdateFilterExt, UpdateHandler},
     types::Update,
 };
 
-pub fn filter_message()
--> Handler<'static, DependencyMap, Result<(), RequestError>, DpHandlerDescription> {
+pub fn filter_message() -> UpdateHandler<RequestError> {
     Update::filter_message().endpoint(message_handler)
 }
 
